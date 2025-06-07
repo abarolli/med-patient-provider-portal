@@ -16,6 +16,14 @@ public class PatientService {
     @Autowired
     private PatientRepository patientRepository;
 
+    @Transactional
+    public PatientDto findById(Long id) {
+        var patient = patientRepository
+            .findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(Patient.class, id));
+
+        return PatientDto.fromPatient(patient);
+    }
     
     @Transactional
     public PatientDto create(PatientCreationDto creationRequest) {
