@@ -25,7 +25,7 @@ import lombok.ToString;
 public class ProviderLocation {
 
     @EmbeddedId
-    private ProviderLocationId id;
+    private ProviderLocationId id = new ProviderLocationId();
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
