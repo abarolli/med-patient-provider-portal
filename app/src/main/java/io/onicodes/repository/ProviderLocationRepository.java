@@ -1,11 +1,11 @@
 package io.onicodes.repository;
 
-import java.security.Provider;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import io.onicodes.entity.ProviderLocation;
+
 @Repository
-public interface ProviderLocationRepository extends JpaRepository<Provider, Long> {
+public interface ProviderLocationRepository extends JpaRepository<ProviderLocation, Long> {
     
 }
