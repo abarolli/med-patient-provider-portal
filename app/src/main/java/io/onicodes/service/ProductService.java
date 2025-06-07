@@ -26,7 +26,7 @@ public class ProductService {
     public void update(ProductDto updateRequest) {
         Product product = productRepository
             .findById(updateRequest.getId())
-            .orElseThrow(() -> new ProductNotFoundException(updateRequest.getId()));
+            .orElseThrow(() -> new RecordNotFoundException(Product.class, updateRequest.getId()));
 
         product.setName(updateRequest.getName());
     }
@@ -35,7 +35,7 @@ public class ProductService {
     public ProductDto findById(Long id) {
         Product product = productRepository
             .findById(id)
-            .orElseThrow(() -> new ProductNotFoundException(id));
+            .orElseThrow(() -> new RecordNotFoundException(Product.class, id));
 
         return new ProductDto(id, product.getName());
     }
@@ -44,7 +44,7 @@ public class ProductService {
     public Long delete(Long id) {
         Product product = productRepository
             .findById(id)
-            .orElseThrow(() -> new ProductNotFoundException(id));
+            .orElseThrow(() -> new RecordNotFoundException(Product.class, id));
 
         productRepository.delete(product);
         return id;
