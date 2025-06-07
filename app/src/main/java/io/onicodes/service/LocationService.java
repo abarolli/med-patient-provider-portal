@@ -1,6 +1,5 @@
 package io.onicodes.service;
 
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 import io.onicodes.dto.LocationCreationDto;
 import io.onicodes.dto.LocationDto;
 import io.onicodes.entity.Location;
-import io.onicodes.entity.ProviderLocation;
 import io.onicodes.repository.LocationRepository;
 import io.onicodes.repository.ProviderRepository;
 import jakarta.transaction.Transactional;
@@ -38,14 +36,7 @@ public class LocationService {
         
         var providers = providerRepository.findAllById(providerIds);
         
-        Set<ProviderLocation> providerLocations = new HashSet<>();
-        for (var provider : providers) {
-            var providerLocation = new ProviderLocation();
-            providerLocation.setProvider(provider);
-            providerLocation.setLocation(location);
-        }
-
-        location.setProviders(providerLocations);
+        providers.forEach(location::addProvider);
 
         return LocationDto.fromLocation(locationRepository.save(location));
     }

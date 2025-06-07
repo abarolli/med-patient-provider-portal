@@ -1,5 +1,6 @@
 package io.onicodes.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
@@ -45,5 +46,12 @@ public class Location {
 
     // locations can be associated with many providers
     @OneToMany(mappedBy = "location", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    private Set<ProviderLocation> providers;
+    private Set<ProviderLocation> providers = new HashSet<>();
+
+    public void addProvider(Provider provider) {
+        var providerLocation = new ProviderLocation();
+        providerLocation.setLocation(this);
+        providerLocation.setProvider(provider);
+        providers.add(providerLocation);
+    }
 }
