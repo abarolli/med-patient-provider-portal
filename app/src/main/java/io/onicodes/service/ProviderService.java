@@ -27,6 +27,15 @@ public class ProviderService {
     private LocationRepository locationRepository;
 
     @Transactional
+    public ProviderDto findById(Long id) {
+        var provider = providerRepository
+            .findById(id)
+            .orElseThrow(() -> new RecordNotFoundException(Provider.class, id));
+
+        return ProviderDto.fromProvider(provider);
+    }
+
+    @Transactional
     public ProviderDto create(ProviderCreationDto creationRequest) {
         var provider = new Provider();
         provider.setFirstName(creationRequest.getFirstName());
