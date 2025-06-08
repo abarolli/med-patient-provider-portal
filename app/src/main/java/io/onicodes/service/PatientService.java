@@ -1,6 +1,8 @@
 package io.onicodes.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.onicodes.dto.PatientCreationDto;
@@ -23,6 +25,13 @@ public class PatientService {
             .orElseThrow(() -> new RecordNotFoundException(Patient.class, id));
 
         return PatientDto.fromPatient(patient);
+    }
+
+    @Transactional
+    public Page<PatientDto> getPatients(int page, int size) {
+        return patientRepository
+            .findAll(PageRequest.of(page, size))
+            .map(PatientDto::fromPatient);
     }
     
     @Transactional
