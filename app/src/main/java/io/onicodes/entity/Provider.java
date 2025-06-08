@@ -2,6 +2,7 @@ package io.onicodes.entity;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -48,7 +49,7 @@ public class Provider {
     private boolean isActive = true;
 
     // providers can be associated with many locations
-    @OneToMany(mappedBy = "provider", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "provider", cascade = {CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     private Set<ProviderLocation> locations = new HashSet<>();
 
     public void addLocation(Location location) {
@@ -56,5 +57,28 @@ public class Provider {
         providerLocation.setProvider(this);
         providerLocation.setLocation(location);
         locations.add(providerLocation);
+    }
+
+    public void updateLocations(Set<Location> updatedLocations) {
+        Set<Long> newIds = updatedLocations
+            .stream()
+            .map(location -> location.getId())
+            .collect(Collectors.toSet());
+
+        locations.removeIf(pl -> !newIds.contains(pl.getLocation().getId()));
+
+        Set<Long> existingIds = locations
+            .stream()
+            .map(pl -> pl.getLocation().getId())
+            .collect(Collectors.toSet());
+
+        for (var location : updatedLocations) {
+            if (!existingIds.contains(location.getId())) {
+                var newProviderLocation = new ProviderLocation();
+                newProviderLocation.setLocation(location);
+                newProviderLocation.setProvider(this);
+                locations.add(newProviderLocation);
+            }
+        }
     }
 }
