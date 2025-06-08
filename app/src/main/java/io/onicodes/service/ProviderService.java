@@ -40,9 +40,14 @@ public class ProviderService {
 
     @Transactional
     public Page<ProviderDto> findProvidersByLocation(LocationDto location) {
+        return findProvidersByLocation(location.getId());
+    }
+    
+    @Transactional
+    public Page<ProviderDto> findProvidersByLocation(Long locationId) {
         Page<Provider> providers = providerRepository
             .findByLocations_Location_Id(
-                location.getId(),
+                locationId,
                 PageRequest.of(0, 10));
     
         return providers.map(ProviderDto::fromProvider);
