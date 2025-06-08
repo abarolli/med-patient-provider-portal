@@ -16,37 +16,28 @@ public class ProductService {
     private ProductRepository productRepository;
 
     @Transactional
-    public void create(ProductCreationDto product) {
-        Product newProduct = new Product();
-        newProduct.setName(product.getName());
-        productRepository.save(newProduct);
-    }
-
-    @Transactional
-    public void update(ProductDto updateRequest) {
-        Product product = productRepository
-            .findById(updateRequest.getId())
-            .orElseThrow(() -> new RecordNotFoundException(Product.class, updateRequest.getId()));
-
-        product.setName(updateRequest.getName());
-    }
-
-    @Transactional
     public ProductDto findById(Long id) {
         Product product = productRepository
             .findById(id)
             .orElseThrow(() -> new RecordNotFoundException(Product.class, id));
 
-        return new ProductDto(id, product.getName());
+        return ProductDto.fromProduct(product);
     }
 
     @Transactional
-    public Long delete(Long id) {
-        Product product = productRepository
-            .findById(id)
-            .orElseThrow(() -> new RecordNotFoundException(Product.class, id));
+    public ProductDto create(ProductCreationDto product) {
+        Product newProduct = new Product();
+        newProduct.setName(product.getName());
+        return ProductDto.fromProduct(productRepository.save(newProduct));
+    }
 
-        productRepository.delete(product);
-        return id;
+    @Transactional
+    public ProductDto update(ProductDto updateRequest) {
+        Product product = productRepository
+            .findById(updateRequest.getId())
+            .orElseThrow(() -> new RecordNotFoundException(Product.class, updateRequest.getId()));
+
+        product.setName(updateRequest.getName());
+        return ProductDto.fromProduct(product);
     }
 }
