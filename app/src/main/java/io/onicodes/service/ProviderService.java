@@ -39,16 +39,16 @@ public class ProviderService {
     }
 
     @Transactional
-    public Page<ProviderDto> findProvidersByLocation(LocationDto location) {
-        return findProvidersByLocation(location.getId());
+    public Page<ProviderDto> findProvidersByLocation(LocationDto location, int page, int size) {
+        return findProvidersByLocation(location.getId(), page, size);
     }
     
     @Transactional
-    public Page<ProviderDto> findProvidersByLocation(Long locationId) {
+    public Page<ProviderDto> findProvidersByLocation(Long locationId, int page, int size) {
         Page<Provider> providers = providerRepository
             .findByLocations_Location_Id(
                 locationId,
-                PageRequest.of(0, 10));
+                PageRequest.of(page, size));
     
         return providers.map(ProviderDto::fromProvider);
     }
