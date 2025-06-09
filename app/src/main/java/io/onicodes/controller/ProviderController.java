@@ -2,15 +2,15 @@ package io.onicodes.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.onicodes.dto.ProviderDto;
 import io.onicodes.service.ProviderService;
 
-@Controller
+@RestController
 @RequestMapping("/providers")
 public class ProviderController {
     
@@ -24,7 +24,8 @@ public class ProviderController {
         @RequestParam Long locationId
     ) {
         
+        page = Math.max(0, page - 1);
         return ResponseEntity.ok(new PagedResponse<>(providerService
-                .findProvidersByLocation(locationId)));
+                .findProvidersByLocation(locationId, page, size)));
     }
 }
