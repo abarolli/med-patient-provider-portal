@@ -12,7 +12,7 @@ import io.onicodes.service.AppointmentService;
 
 @RestController
 @RequestMapping("/appointments")
-public class AppointmentController {
+public class AppointmentRestController {
     
     @Autowired
     private AppointmentService appointmentService;

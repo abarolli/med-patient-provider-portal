@@ -14,7 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/patients")
 @Slf4j
-public class PatientController {
+public class PatientRestController {
 
     @Autowired
     private PatientService patientService;

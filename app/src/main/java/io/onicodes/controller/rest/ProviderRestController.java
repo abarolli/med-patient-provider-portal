@@ -7,24 +7,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.onicodes.dto.LocationDto;
-import io.onicodes.service.LocationService;
+import io.onicodes.dto.ProviderDto;
+import io.onicodes.service.ProviderService;
 
 @RestController
-@RequestMapping("/locations")
-public class LocationController {
+@RequestMapping("/providers")
+public class ProviderRestController {
     
     @Autowired
-    private LocationService locationService;
+    private ProviderService providerService;
 
     @GetMapping("/json")
-    public ResponseEntity<PagedResponse<LocationDto>> getLocations(
+    public ResponseEntity<PagedResponse<ProviderDto>> getProviders(
         @RequestParam(defaultValue = "1") int page,
-        @RequestParam(defaultValue = "10") int size
+        @RequestParam(defaultValue = "10") int size,
+        @RequestParam Long locationId
     ) {
         
         page = Math.max(0, page - 1);
-        var locationsPage = locationService.getLocations(page, size);
-        return ResponseEntity.ok(new PagedResponse<>(locationsPage));
+        return ResponseEntity.ok(new PagedResponse<>(providerService
+                .findProvidersByLocation(locationId, page, size)));
     }
 }
