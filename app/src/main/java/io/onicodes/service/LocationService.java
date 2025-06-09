@@ -4,6 +4,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import io.onicodes.dto.LocationCreationDto;
@@ -21,6 +23,14 @@ public class LocationService {
 
     @Autowired
     private ProviderRepository providerRepository;
+
+    @Transactional
+    public Page<LocationDto> getLocations(int page, int size) {
+        
+        return locationRepository
+            .findAll(PageRequest.of(page, size))
+            .map(LocationDto::fromLocation);
+    }
 
     @Transactional
     public LocationDto create(LocationCreationDto creationRequest) {
