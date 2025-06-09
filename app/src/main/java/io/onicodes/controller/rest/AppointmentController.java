@@ -1,4 +1,4 @@
-package io.onicodes.controller;
+package io.onicodes.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
-    @PostMapping("/schedule")
+    @PostMapping("/schedule/json")
     public ResponseEntity<String> scheduleAppointment(@ModelAttribute AppointmentCreationDto appointment) {
         
         var success = appointmentService.create(appointment);

@@ -1,4 +1,4 @@
-package io.onicodes.controller;
+package io.onicodes.controller.rest;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package io.onicodes.controller;
+package io.onicodes.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class ProviderController {
     @Autowired
     private ProviderService providerService;
 
-    @GetMapping
+    @GetMapping("/json")
     public ResponseEntity<PagedResponse<ProviderDto>> getProviders(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size,

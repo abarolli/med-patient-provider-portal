@@ -1,4 +1,4 @@
-package io.onicodes.controller;
+package io.onicodes.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class LocationController {
     @Autowired
     private LocationService locationService;
 
-    @GetMapping
+    @GetMapping("/json")
     public ResponseEntity<PagedResponse<LocationDto>> getLocations(
         @RequestParam(defaultValue = "1") int page,
         @RequestParam(defaultValue = "10") int size
