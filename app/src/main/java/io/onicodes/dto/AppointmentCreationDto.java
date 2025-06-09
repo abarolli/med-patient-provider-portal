@@ -1,6 +1,5 @@
 package io.onicodes.dto;
 
-import java.time.OffsetDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -17,9 +16,10 @@ import lombok.ToString;
 @Setter
 public class AppointmentCreationDto {
     
-    private PatientDto patient;
-    private SlimLocationDto location;
-    private SlimProviderDto provider;
-    private OffsetDateTime appointmentTime;
+    private Long patientId;
+    private Long locationId;
+    private Long providerId;
+    private String localDateTime;
+    private String timeZone;
 
 }
