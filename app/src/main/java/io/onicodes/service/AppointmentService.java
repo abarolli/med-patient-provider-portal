@@ -1,5 +1,9 @@
 package io.onicodes.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +19,10 @@ import io.onicodes.repository.LocationRepository;
 import io.onicodes.repository.PatientRepository;
 import io.onicodes.repository.ProviderRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class AppointmentService {
     
     @Autowired
@@ -36,17 +42,17 @@ public class AppointmentService {
         
         var appointment = new Appointment();
         
-        var patientId = creationRequest.getPatient().getId();
+        var patientId = creationRequest.getPatientId();
         var patient = patientRepository
             .findById(patientId)
             .orElseThrow(() -> new RecordNotFoundException(Patient.class, patientId));
 
-        var locationId = creationRequest.getLocation().getId();
+        var locationId = creationRequest.getLocationId();
         var location = locationRepository
             .findById(locationId)
             .orElseThrow(() -> new RecordNotFoundException(Location.class, locationId));
 
-        var providerId = creationRequest.getProvider().getId();
+        var providerId = creationRequest.getProviderId();
         var provider = providerRepository
             .findById(providerId)
             .orElseThrow(() -> new RecordNotFoundException(Provider.class, providerId));
@@ -54,7 +60,13 @@ public class AppointmentService {
         appointment.setPatient(patient);
         appointment.setLocation(location);
         appointment.setProvider(provider);
-        appointment.setAppointmentTime(creationRequest.getAppointmentTime());
+
+        var localDateTime = LocalDateTime.parse(creationRequest.getLocalDateTime());
+
+        var zoneId = ZoneId.of(creationRequest.getTimeZone());
+        var appointmentTime = ZonedDateTime.of(localDateTime, zoneId).toOffsetDateTime();
+        appointment.setAppointmentTime(appointmentTime);
+        
         return AppointmentDto.fromAppointment(appointmentRepository.save(appointment));
     }
 
